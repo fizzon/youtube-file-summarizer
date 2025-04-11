@@ -1,14 +1,14 @@
 import google.generativeai as genai
 import whisper
 from utils import split_text
-from config import GOOGLE_API_KEY
 import streamlit as st
 import logging
 
 logging.basicConfig(level=logging.INFO)
 
 try:
-    genai.configure(api_key=GOOGLE_API_KEY)
+    api_key = st.secrets["GOOGLE_API_KEY"]
+    genai.configure(api_key=api_key)
     logging.info("Google Generative AI configured successfully.")
 except Exception as e:
     st.error(f"Помилка конфігурації Google API: {e}")
