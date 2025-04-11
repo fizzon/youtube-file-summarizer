@@ -2,7 +2,6 @@ import json
 import random
 import streamlit as st
 import google.generativeai as genai
-from config import GOOGLE_API_KEY
 import logging
 
 def generate_questions(summary_text, num_questions=5, q_type='multiple_choice', model_name="models/gemini-2.0-flash-lite"): # Можливо, Pro краще для цього
