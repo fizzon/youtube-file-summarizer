@@ -66,3 +66,43 @@ After generating the summary, the app can create **multiple-choice questions** f
    ```bash
    git clone <URL вашого репозиторію>
    cd <назва папки>
+   ```
+
+2. **Створіть та активуйте віртуальне середовище / Create a virtual environment**
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate  # Linux/macOS
+   # або / or
+   .venv\Scripts\activate     # Windows
+   ```
+
+3. **Встановіть залежності / Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Встановіть `ffmpeg`**
+   - Необхідно для `faster-whisper` та `yt-dlp`.
+   - Інструкції: [ffmpeg.org](https://ffmpeg.org/download.html)
+
+5. **Налаштуйте API ключ / Set up API Key**
+   - Створіть `config.py` (і додайте в `.gitignore`) або
+   - Використовуйте змінні середовища
+   - Для Streamlit Cloud використовуйте `st.secrets`
+
+6. **Запуск додатку / Run the app**
+   ```bash
+   streamlit run main.py
+   ```
+
+---
+
+## 📌 Скриншоти та демо (опційно)
+
+_Тут можна додати скріншоти або посилання на відео з демонстрацією._
+
+---
+
+## 📄 Ліцензія / License
+
+MIT License
