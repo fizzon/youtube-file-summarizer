@@ -1,5 +1,6 @@
 streamlit
 google-generativeai
+openai-whisper
 yt-dlp
 pypdf2
 python-pptx
