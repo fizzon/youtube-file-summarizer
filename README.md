@@ -16,7 +16,7 @@
 - **Конспектування з YouTube**  
   Вставте посилання на відео, і додаток:
   - Завантажить аудіо (`yt-dlp`)
-  - Зробить транскрипцію (`faster-whisper`)
+  - Зробить транскрипцію (`whisper`)
   - Створить конспект через **Google Gemini API**
 
 - **Конспектування з файлів**  
@@ -38,7 +38,7 @@ After generating the summary, the app can create **multiple-choice questions** f
 - **Summarization from YouTube**  
   Paste a video link – the app will:
   - Download audio (`yt-dlp`)
-  - Transcribe it (`faster-whisper`)
+  - Transcribe it (`whisper`)
   - Summarize using **Google Gemini API**
 
 - **Summarization from Files**  
@@ -54,7 +54,7 @@ After generating the summary, the app can create **multiple-choice questions** f
 - **Python**
 - **Streamlit** – UI
 - **Google Gemini API** – Summarization & quiz generation
-- **faster-whisper** – Audio transcription
+- **whisper** – Audio transcription
 - **yt-dlp** – YouTube audio download
 - **PyPDF2**, **python-pptx** – File parsing
 
@@ -82,7 +82,7 @@ After generating the summary, the app can create **multiple-choice questions** f
    ```
 
 4. **Встановіть `ffmpeg`**
-   - Необхідно для `faster-whisper` та `yt-dlp`.
+   - Необхідно для `-whisper` та `yt-dlp`.
    - Інструкції: [ffmpeg.org](https://ffmpeg.org/download.html)
 
 5. **Налаштуйте API ключ / Set up API Key**
