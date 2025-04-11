@@ -29,21 +29,18 @@ def generate_questions(summary_text, num_questions=5, q_type='multiple_choice', 
 
         JSON відповідь:
         """
-    else: # Додайте інші типи за потреби
+    else: 
         st.error("Непідтримуваний тип питань.")
         return None
 
     try:
-        # Додайте затримку, якщо потрібно
-        # time.sleep(5)
+
         model = genai.GenerativeModel(model_name)
         response = model.generate_content(prompt)
 
-        # Спроба очистити відповідь від маркдауну JSON
         cleaned_response_text = response.text.strip().replace('```json', '').replace('```', '').strip()
 
         questions_data = json.loads(cleaned_response_text)
-        # Перемішати питання для різноманітності
         random.shuffle(questions_data)
         return questions_data
 
