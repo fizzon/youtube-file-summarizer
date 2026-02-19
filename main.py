@@ -1,6 +1,6 @@
 import streamlit as st
 from youtube_processing import download_audio
-from transcript_processing import transcribe_audio, generate_full_summary
+from transcript_processing import transcribe_audio, summarize_transcript_pipeline
 from utils import extract_text_from_pdf, extract_text_from_pptx, extract_text_from_txt
 from knowledge_check import generate_questions
 import os
@@ -22,10 +22,34 @@ if 'audio_file_path' not in st.session_state:
      st.session_state.audio_file_path = None
 if 'source_text' not in st.session_state:
      st.session_state.source_text = None
+if 'summary_metadata' not in st.session_state:
+     st.session_state.summary_metadata = None
 
 
 
 st.title("🎓 Навчальний агент")
+
+summary_mode = st.selectbox(
+    "Режим конспекту:",
+    options=["short", "detailed"],
+    index=0,
+    help="short — короткий конспект, detailed — детальний конспект.",
+)
+
+summary_length = st.selectbox(
+    "Розмір конспекту:",
+    options=["short", "medium", "long"],
+    index=1,
+    help="Керує орієнтовною довжиною відповіді моделі.",
+)
+
+max_tokens = st.number_input(
+    "Максимум токенів (0 = авто):",
+    min_value=0,
+    max_value=4096,
+    value=0,
+    step=32,
+)
 
 input_option = st.radio(
     "Виберіть джерело контенту:",
@@ -46,6 +70,7 @@ if input_option == 'Посилання на YouTube':
         st.session_state.show_results = False
         st.session_state.source_text = None
         st.session_state.audio_file_path = None 
+        st.session_state.summary_metadata = None
 
         if youtube_url:
             transcript = None
@@ -87,6 +112,7 @@ elif input_option == 'Завантажити файл':
             st.session_state.show_results = False
             st.session_state.source_text = None
             st.session_state.audio_file_path = None # Файлу не буде
+            st.session_state.summary_metadata = None
 
             file_type = uploaded_file.type
             extracted_text = None
@@ -125,16 +151,28 @@ if st.session_state.source_text:
 
     if not st.session_state.summary:
         with st.spinner("✍️ Генеруємо конспект..."):
-            final_summary = generate_full_summary(st.session_state.source_text)
-            st.session_state.summary = final_summary
+            summary_result = summarize_transcript_pipeline(
+                transcript=st.session_state.source_text,
+                mode=summary_mode,
+                summary_length=summary_length,
+                max_tokens=max_tokens if max_tokens > 0 else None,
+            )
+            st.session_state.summary = summary_result["summary"]
+            st.session_state.summary_metadata = summary_result
 
-            if not final_summary:
+            if not summary_result["summary"]:
                  st.error("Не вдалося створити конспект.")
 
 
 if st.session_state.summary:
     st.success("📚 Конспект:")
     st.markdown(st.session_state.summary)
+    if st.session_state.summary_metadata:
+        metadata = st.session_state.summary_metadata
+        st.caption(
+            f"Мова: {metadata['language']} · Режим: {metadata['mode']} · "
+            f"Розмір: {metadata['length']} · Compression ratio: {metadata['compression_ratio']:.3f}"
+        )
     st.markdown("---")
 
     if not st.session_state.questions and not st.session_state.show_results: 
